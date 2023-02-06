@@ -1,0 +1,100 @@
+from collections import defaultdict as dd
+dictionary = dd(int)
+Count = dict()
+arr = []
+dev = []
+
+
+def findstn(n1,n2):
+    l = Count[n1]
+    for i in l:
+        if i == n2:
+            return n1 + ' ' + n2
+        else:
+            return n1 +" "+ findstn(i,n2)
+    return "Route not found"
+
+while(True):
+    txt =list(map(str,input(" \n Enter command: \n To quit the program, type 'STOP' :\t").split()))
+    if len(txt) ==3:
+        if txt[0] == 'ADD':
+            if txt[1] == 'COMPUTER':
+                if txt[2] not in arr:
+                    arr.append(txt[2])
+                    Count[txt[2]] = []
+                    print("Successfully added",txt[2])
+                else:
+                    print("The name already exists ")
+            elif  txt[1] == 'REPEATER':
+                if txt[2] not in dev:
+                    dev.append(txt[2])
+                    Count[txt[2]] = []
+                    print("Successfully added ",txt[2])
+                else:
+                    print("The name already exists ")
+
+            else:
+                print("Invalid command syntax")
+                
+                
+        elif txt[0] == "SET_DEVICE_STRENGTH":
+            if txt[2].isdigit():
+                dictionary[txt[1]] = int(txt[2]) 
+                print("Successfully defined strength")
+            else:
+                print('Invalid command syntax')
+        elif txt[0] == 'CONNECT':
+            c =arr
+            c.extend(dev)
+            if txt[1] in c and txt[2] in c:
+                l = Count[txt[1]]
+                if txt[1] == txt[2]:
+                    print("Cannot connect device to itself")
+                elif txt[2] not in l :
+                    l.append(txt[2])
+                    Count[txt[1]] = l
+                    # print(Count)
+                    print("Successfully connected")
+                else:
+                    print("Devices are already connected")
+            else:
+                print("Node not found")
+                
+                
+        elif t[0] == "INFO_ROUTE":
+            if txt[1][0] != txt[2][0]:
+                print("Route cannot be calculated with a repeater")
+            if txt[1] == txt[2]:
+                print(txt[1],'->',txt[1])
+            else:
+                if txt[1][0] == 'A':
+                    if txt[1] not in arr or txt[2] not in arr:
+                        print("Node not found")
+                    else:
+                        a = findstn(txt[1],txt[2])
+                        b = list(map(str,a.split()))
+                        if len(b) <= dictionary[txt[1]]:
+                            print(*b,sep = '->')
+                        else:
+                            print"Length not enough")
+                elif txt[1][0] == 'R':
+                    if txt[1] not in dev or txt[2] not in dev:
+                        
+                        val = findstn(txt[1],txt[2])
+                        print(val)
+                        
+                    else:
+                        a = findstn(txt[1],txt[2])
+                        b = list(map(str,a.split()))
+                        
+                        if len(b) <= dictionary[txt[1]]:
+                            print(*b,sep = '->')
+                        else:
+                            print("Length not enough")
+                else:
+                    pass
+
+    elif txt[0].lower() == "stop":
+        break
+    else:
+        print('Invalid command syntax')        
